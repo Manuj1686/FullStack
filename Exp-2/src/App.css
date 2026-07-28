@@ -1,0 +1,160 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  --bg: #eef2f7;
+  --surface: #ffffff;
+
+  --text: #111827;
+  --text-light: #6b7280;
+
+  --border: #e5e7eb;
+
+  --shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #334155 100%);
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+
+.container {
+  width: min(900px, 92%);
+  margin: auto;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 45px;
+  box-shadow: var(--shadow);
+}
+
+h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--text-light);
+  margin-bottom: 35px;
+  font-size: 15px;
+}
+
+.form {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.form input,
+.form textarea {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 15px;
+  transition: .25s;
+}
+
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+}
+
+.form button {
+  padding: 15px 28px;
+  border: none;
+  border-radius: 12px;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.form button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--primary);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 18px;
+  transition: .25s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+.card h3 {
+  color: var(--text);
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.card p {
+  color: var(--text-light);
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-light);
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+@media (max-width:768px){
+
+.container{
+padding:25px;
+}
+
+.form{
+flex-direction:column;
+}
+
+.form button{
+width:100%;
+}
+
+h1{
+font-size:2rem;
+}
+
+}
