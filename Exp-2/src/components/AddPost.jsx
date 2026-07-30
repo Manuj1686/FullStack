@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
 import { addPost } from "../features/postsSlice";
 
 function AddPost() {
@@ -7,8 +8,13 @@ function AddPost() {
 
   const platforms = useSelector((state) => state.platforms.list);
 
+  const options = platforms.map((item) => ({
+    value: item,
+    label: item,
+  }));
+
   const [title, setTitle] = useState("");
-  const [platform, setPlatform] = useState(platforms[0]);
+  const [platform, setPlatform] = useState(options[0]);
 
   const handleAdd = () => {
     if (!title.trim()) return;
@@ -17,12 +23,12 @@ function AddPost() {
       addPost({
         id: Date.now(),
         title,
-        platform,
+        platform: platform.value,
       })
     );
 
     setTitle("");
-    setPlatform(platforms[0]);
+    setPlatform(options[0]);
   };
 
   return (
@@ -34,16 +40,14 @@ function AddPost() {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <select
+      <Select
+        className="react-select-container"
+        classNamePrefix="react-select"
+        options={options}
         value={platform}
-        onChange={(e) => setPlatform(e.target.value)}
-      >
-        {platforms.map((item) => (
-          <option key={item} value={item}>
-            {item}
-          </option>
-        ))}
-      </select>
+        onChange={setPlatform}
+        isSearchable={false}
+      />
 
       <button onClick={handleAdd}>
         Add Post

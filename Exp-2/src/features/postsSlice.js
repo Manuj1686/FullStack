@@ -6,11 +6,13 @@ const initialState = {
       id: 1,
       title: "Redux Toolkit",
       platform: "Instagram",
+      status: "Published",
     },
     {
       id: 2,
       title: "React Hooks",
       platform: "LinkedIn",
+      status: "Draft",
     },
   ],
 };
@@ -37,6 +39,7 @@ const postsSlice = createSlice({
       if (post) {
         post.title = action.payload.title;
         post.platform = action.payload.platform;
+        post.status = action.payload.status;
       }
     },
   },
