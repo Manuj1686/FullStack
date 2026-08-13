@@ -1,73 +1,101 @@
-// Demo User
-const DEMO_USER = {
-   name: "Manuj",
-  email: "admin@aegis.com",
-  password: "123456",
-  role: "Administrator",
-};
+const DEMO_USERS = [
+  {
+    name: "Manuj",
+    email: "admin@aegis.com",
+    password: "123456",
+    role: "Administrator",
+  },
+  {
+    name: "Alex",
+    email: "editor@aegis.com",
+    password: "123456",
+    role: "Editor",
+  },
+  {
+    name: "Viewer",
+    email: "viewer@aegis.com",
+    password: "123456",
+    role: "Viewer",
+  },
+];
 
-// Login
 export function login(email, password) {
-  if (
-    email === DEMO_USER.email &&
-    password === DEMO_USER.password
-  ) {
-    const payload = {
-      name: DEMO_USER.name,
-      email: DEMO_USER.email,
-      role: DEMO_USER.role,
-      exp: Date.now() + 60 * 60 * 1000, // 1 hour
-    };
+  const cleanEmail = String(email).trim().toLowerCase();
+  const cleanPassword = String(password);
 
-    const token = btoa(JSON.stringify(payload));
+  const user = DEMO_USERS.find(
+    (item) =>
+      item.email.toLowerCase() === cleanEmail &&
+      item.password === cleanPassword
+  );
 
-    localStorage.setItem("token", token);
-
+  if (!user) {
     return {
-      success: true,
-      token,
+      success: false,
+      message: "Invalid email or password",
     };
   }
 
+  const payload = {
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    exp: Date.now() + 60 * 60 * 1000,
+  };
+
+  const token = btoa(JSON.stringify(payload));
+
+  localStorage.setItem("token", token);
+
   return {
-    success: false,
-    message: "Invalid email or password",
+    success: true,
+    token,
+    user: payload,
   };
 }
 
-// Logout
 export function logout() {
   localStorage.removeItem("token");
 }
 
-// Check Login
 export function isAuthenticated() {
   const token = localStorage.getItem("token");
 
-  if (!token) return false;
+  if (!token) {
+    return false;
+  }
 
   try {
     const user = JSON.parse(atob(token));
 
-    if (Date.now() > user.exp) {
+    if (!user.exp || Date.now() >= user.exp) {
       localStorage.removeItem("token");
       return false;
     }
 
     return true;
   } catch {
+    localStorage.removeItem("token");
     return false;
   }
 }
 
-// Get User
 export function getUser() {
   const token = localStorage.getItem("token");
 
-  if (!token) return null;
+  if (!token) {
+    return null;
+  }
 
   try {
-    return JSON.parse(atob(token));
+    const user = JSON.parse(atob(token));
+
+    if (!user.exp || Date.now() >= user.exp) {
+      localStorage.removeItem("token");
+      return null;
+    }
+
+    return user;
   } catch {
     return null;
   }

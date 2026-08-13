@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import DashboardLayout from "../components/Dashboard/DashboardLayout";
 import Navbar from "../components/Dashboard/Navbar";
@@ -20,45 +19,72 @@ import {
   addActivity,
 } from "../utils/storage";
 
-export default function Dashboard() {
-  const navigate = useNavigate();
+import { getPermissions } from "../utils/permissions";
 
+export default function Dashboard() {
   const user = getUser();
 
   const [posts, setPosts] = useState([]);
   const [activity, setActivity] = useState([]);
 
-  useEffect(() => {
-    setPosts(loadPosts());
-    setActivity(loadActivity());
+  const userPermissions = getPermissions(user?.role);
 
-    addActivity("Logged In");
-    setActivity(loadActivity());
+  useEffect(() => {
+    const savedPosts = loadPosts();
+    const savedActivity = loadActivity();
+
+    setPosts(
+      Array.isArray(savedPosts)
+        ? savedPosts
+        : []
+    );
+
+    setActivity(
+      Array.isArray(savedActivity)
+        ? savedActivity
+        : []
+    );
   }, []);
 
   function refreshActivity() {
-    setActivity(loadActivity());
+    const updatedActivity = loadActivity();
+
+    setActivity(
+      Array.isArray(updatedActivity)
+        ? updatedActivity
+        : []
+    );
+  }
+
+  function handleActivity(message) {
+    addActivity(message);
+    refreshActivity();
   }
 
   function handleLogout() {
-    addActivity("Logged Out");
-    refreshActivity();
-
     logout();
-    navigate("/");
+    window.location.replace("/");
   }
 
   return (
     <DashboardLayout>
 
-      
+      <Navbar
+        user={user}
+        onLogout={handleLogout}
+      />
 
       <div className="mx-auto max-w-[1500px] px-8 py-10">
 
-        <Hero user={user} />
+        <Hero
+          user={user}
+        />
 
         <div className="mt-10">
-          <QuickActions />
+          <QuickActions
+            user={user}
+            permissions={userPermissions}
+          />
         </div>
 
         <div className="mt-10">
@@ -72,25 +98,24 @@ export default function Dashboard() {
 
           <div className="space-y-8 xl:col-span-2">
 
-            <PostComposer
+            {userPermissions.canCreate && (
+              <PostComposer
+                user={user}
+                posts={posts}
+                setPosts={setPosts}
+                savePosts={savePosts}
+                addActivity={handleActivity}
+                permissions={userPermissions}
+              />
+            )}
+
+            <PostFeed
               user={user}
               posts={posts}
               setPosts={setPosts}
               savePosts={savePosts}
-              addActivity={(message) => {
-                addActivity(message);
-                refreshActivity();
-              }}
-            />
-
-            <PostFeed
-              posts={posts}
-              setPosts={setPosts}
-              savePosts={savePosts}
-              addActivity={(message) => {
-                addActivity(message);
-                refreshActivity();
-              }}
+              addActivity={handleActivity}
+              permissions={userPermissions}
             />
 
           </div>

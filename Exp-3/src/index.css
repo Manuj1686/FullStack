@@ -1,38 +1,45 @@
 @import "tailwindcss";
 
-body{
-    background:#050505;
-    color:white;
+:root {
+  --bg: #050505;
+  --surface: #111111;
+  --surface2: #181818;
+
+  --gold: #D4AF37;
+  --gold-light: #F4D46A;
+
+  --border: #2A2A2A;
+
+  --text: #FFFFFF;
+  --secondary: #9CA3AF;
 }
 
-input{
-    outline:none;
+* {
+  box-sizing: border-box;
 }
 
-button{
-    cursor:pointer;
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
 }
 
-input:-webkit-autofill{
-    -webkit-box-shadow:0 0 0 1000px #18181b inset;
-    -webkit-text-fill-color:white;
+body {
+  background: var(--bg);
+  color: var(--text);
 }
-:root{
 
---bg:#050505;
+input {
+  outline: none;
+}
 
---surface:#111111;
+button {
+  cursor: pointer;
+}
 
---surface2:#181818;
-
---gold:#D4AF37;
-
---gold-light:#F4D46A;
-
---border:#2A2A2A;
-
---text:#FFFFFF;
-
---secondary:#9CA3AF;
-
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #18181b inset;
+  -webkit-text-fill-color: white;
 }

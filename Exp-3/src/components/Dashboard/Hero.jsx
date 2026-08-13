@@ -1,140 +1,77 @@
-import { LogOut, LayoutDashboard, FileText, Activity } from "lucide-react";
 import { motion } from "framer-motion";
+import { ShieldCheck } from "lucide-react";
 
-export default function Navbar({ user, onLogout }) {
+export default function Hero({ user }) {
   return (
-    <motion.nav
-      initial={{ y: -60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+    <motion.section
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="
-      sticky
-      top-0
-      z-50
-      border-b
-      border-white/10
-      bg-[#111111]/70
-      backdrop-blur-3xl
-      "
+      className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#111111] p-8"
     >
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between px-10 py-5">
 
-        {/* Logo */}
+      {/* Glow */}
 
-        <div>
+      <div className="pointer-events-none absolute right-[-100px] top-[-100px] h-[300px] w-[300px] rounded-full bg-yellow-500/10 blur-[120px]" />
 
-          <h1 className="text-3xl font-bold tracking-[8px] text-yellow-500">
-            AEGIS
-          </h1>
+      <div className="relative">
 
-          <p className="mt-1 text-xs tracking-[5px] text-zinc-500">
-            AUTH PORTAL
+        {/* Session */}
+
+        <div className="flex items-center gap-3">
+
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-yellow-500/20 bg-yellow-500/10 text-yellow-500">
+            <ShieldCheck size={21} />
+          </div>
+
+          <p className="text-sm font-medium tracking-[4px] text-yellow-500">
+            SECURE SESSION
           </p>
 
         </div>
 
-        {/* Navigation */}
+        {/* Greeting */}
 
-        <div className="hidden items-center gap-10 md:flex">
+        <h1 className="mt-6 text-5xl font-bold text-white">
+          Hey {user?.name || "User"} 👋
+        </h1>
 
-          <button className="group flex items-center gap-2 text-zinc-400 transition hover:text-yellow-500">
+        <p className="mt-4 text-lg text-zinc-400">
+          Welcome to your AEGIS workspace.
+        </p>
 
-            <LayoutDashboard size={18} />
+        {/* User Details */}
 
-            <span>Dashboard</span>
+        <div className="mt-8 flex flex-wrap gap-4">
 
-            <div className="absolute mt-8 h-[2px] w-0 bg-yellow-500 transition-all duration-300 group-hover:w-20"></div>
+          <div className="rounded-xl border border-white/10 bg-black/20 px-5 py-3">
 
-          </button>
+            <p className="text-xs uppercase tracking-[2px] text-zinc-600">
+              Role
+            </p>
 
-          <button className="group flex items-center gap-2 text-zinc-400 transition hover:text-yellow-500">
-
-            <FileText size={18} />
-
-            <span>Posts</span>
-
-          </button>
-
-          <button className="group flex items-center gap-2 text-zinc-400 transition hover:text-yellow-500">
-
-            <Activity size={18} />
-
-            <span>Activity</span>
-
-          </button>
-
-        </div>
-
-        {/* Right Side */}
-
-        <div className="flex items-center gap-5">
-
-          <div className="flex items-center gap-3">
-
-            <div
-              className="
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-full
-              bg-gradient-to-br
-              from-yellow-400
-              to-yellow-600
-              text-lg
-              font-bold
-              text-black
-              shadow-[0_0_25px_rgba(212,175,55,.35)]
-              "
-            >
-              {user?.name?.charAt(0)}
-            </div>
-
-            <div>
-
-              <p className="font-semibold text-white">
-                {user?.name}
-              </p>
-
-              <p className="text-sm text-zinc-500">
-                {user?.role}
-              </p>
-
-            </div>
+            <p className="mt-1 font-medium text-yellow-500">
+              {user?.role || "Unknown"}
+            </p>
 
           </div>
 
-          <button
-            onClick={onLogout}
-            className="
-            flex
-            items-center
-            gap-2
-            rounded-2xl
-            border
-            border-yellow-500/20
-            bg-yellow-500/10
-            px-5
-            py-3
-            text-yellow-500
-            transition-all
-            duration-300
-            hover:bg-yellow-500
-            hover:text-black
-            hover:shadow-[0_0_30px_rgba(212,175,55,.35)]
-            "
-          >
-            <LogOut size={18} />
+          <div className="rounded-xl border border-white/10 bg-black/20 px-5 py-3">
 
-            Logout
+            <p className="text-xs uppercase tracking-[2px] text-zinc-600">
+              Email
+            </p>
 
-          </button>
+            <p className="mt-1 text-zinc-300">
+              {user?.email || "Unknown"}
+            </p>
+
+          </div>
 
         </div>
 
       </div>
 
-    </motion.nav>
+    </motion.section>
   );
 }

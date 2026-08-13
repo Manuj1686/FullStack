@@ -1,154 +1,129 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { SendHorizontal, Sparkles } from "lucide-react";
-import toast from "react-hot-toast";
-
-import GlassCard from "./GlassCard";
+import { Send } from "lucide-react";
 
 export default function PostComposer({
   user,
-  posts,
+  posts = [],
   setPosts,
   savePosts,
   addActivity,
+  permissions,
 }) {
   const [content, setContent] = useState("");
+
+  const canCreate =
+    permissions?.canCreate === true;
+
+  if (!canCreate) {
+    return null;
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!permissions?.canCreate) {
+      return;
+    }
+
     if (!content.trim()) {
-      toast.error("Post cannot be empty");
       return;
     }
 
     const newPost = {
       id: Date.now(),
-      author: user.name,
-      role: user.role,
-      content,
-      likes: 0,
-      createdAt: new Date().toLocaleString(),
+      author: user?.name || "User",
+      email: user?.email || "",
+      content: content.trim(),
+      createdAt: new Date().toISOString(),
     };
 
-    const updatedPosts = [newPost, ...posts];
+    const updatedPosts = [
+      newPost,
+      ...posts,
+    ];
 
     setPosts(updatedPosts);
-
     savePosts(updatedPosts);
 
-    addActivity("Created a new post");
-
-    toast.success("Post Published");
+    if (addActivity) {
+      addActivity("Created a new post");
+    }
 
     setContent("");
   }
 
   return (
-    <GlassCard className="p-8">
+    <div className="rounded-3xl border border-white/10 bg-[#111111] p-7">
 
-      <div className="flex items-center gap-3">
+      <div>
 
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 text-xl font-bold text-black shadow-[0_0_25px_rgba(212,175,55,.35)]">
+        <h2 className="text-2xl font-bold text-white">
+          Create Post
+        </h2>
 
-          {user.name.charAt(0)}
-
-        </div>
-
-        <div>
-
-          <h2 className="text-xl font-semibold">
-
-            {user.name}
-
-          </h2>
-
-          <p className="text-sm text-zinc-500">
-
-            {user.role}
-
-          </p>
-
-        </div>
+        <p className="mt-1 text-sm text-zinc-500">
+          Share something with your workspace.
+        </p>
 
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="mt-8"
+        className="mt-6"
       >
 
         <textarea
-          rows={6}
-          maxLength={300}
           value={content}
-          placeholder="Share your thoughts with everyone..."
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) =>
+            setContent(e.target.value)
+          }
+          rows={5}
+          placeholder="What's on your mind?"
           className="
-          w-full
-          resize-none
-          rounded-3xl
-          border
-          border-white/10
-          bg-black/30
-          p-6
-          text-white
-          outline-none
-          transition-all
-          duration-300
-          placeholder:text-zinc-600
-          focus:border-yellow-500
-          focus:ring-2
-          focus:ring-yellow-500/20
+            w-full
+            resize-none
+            rounded-2xl
+            border
+            border-white/10
+            bg-[#080808]
+            p-5
+            text-white
+            placeholder:text-zinc-600
+            outline-none
+            transition
+            focus:border-yellow-500/40
           "
         />
 
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-4 flex justify-end">
 
-          <div className="flex items-center gap-2 text-sm text-zinc-500">
-
-            <Sparkles
-              size={16}
-              className="text-yellow-500"
-            />
-
-            {content.length} / 300 Characters
-
-          </div>
-
-          <motion.button
-            whileHover={{
-              scale: 1.04,
-            }}
-            whileTap={{
-              scale: .97,
-            }}
+          <button
+            type="submit"
+            disabled={!content.trim()}
             className="
-            flex
-            items-center
-            gap-3
-            rounded-2xl
-            bg-gradient-to-r
-            from-yellow-400
-            to-yellow-600
-            px-7
-            py-3
-            font-semibold
-            text-black
-            shadow-[0_15px_35px_rgba(212,175,55,.25)]
+              flex
+              items-center
+              gap-2
+              rounded-xl
+              bg-yellow-500
+              px-5
+              py-3
+              font-medium
+              text-black
+              transition
+              hover:bg-yellow-400
+              disabled:cursor-not-allowed
+              disabled:opacity-40
             "
           >
-
-            <SendHorizontal size={18} />
-
-            Publish
-
-          </motion.button>
+            <Send size={17} />
+            Publish Post
+          </button>
 
         </div>
 
       </form>
 
-    </GlassCard>
+    </div>
   );
 }
