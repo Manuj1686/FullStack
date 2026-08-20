@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-=======
 import { useNavigate } from "react-router-dom";
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 
 import DashboardLayout from "../components/Dashboard/DashboardLayout";
 import Navbar from "../components/Dashboard/Navbar";
@@ -23,59 +20,14 @@ import {
   addActivity,
 } from "../utils/storage";
 
-<<<<<<< HEAD
-import { getPermissions } from "../utils/permissions";
-
-export default function Dashboard() {
-=======
 export default function Dashboard() {
   const navigate = useNavigate();
 
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
   const user = getUser();
 
   const [posts, setPosts] = useState([]);
   const [activity, setActivity] = useState([]);
 
-<<<<<<< HEAD
-  const userPermissions = getPermissions(user?.role);
-
-  useEffect(() => {
-    const savedPosts = loadPosts();
-    const savedActivity = loadActivity();
-
-    setPosts(
-      Array.isArray(savedPosts)
-        ? savedPosts
-        : []
-    );
-
-    setActivity(
-      Array.isArray(savedActivity)
-        ? savedActivity
-        : []
-    );
-  }, []);
-
-  function refreshActivity() {
-    const updatedActivity = loadActivity();
-
-    setActivity(
-      Array.isArray(updatedActivity)
-        ? updatedActivity
-        : []
-    );
-  }
-
-  function handleActivity(message) {
-    addActivity(message);
-    refreshActivity();
-  }
-
-  function handleLogout() {
-    logout();
-    window.location.replace("/");
-=======
   useEffect(() => {
     setPosts(loadPosts());
     setActivity(loadActivity());
@@ -94,30 +46,11 @@ export default function Dashboard() {
 
     logout();
     navigate("/");
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
   }
 
   return (
     <DashboardLayout>
 
-<<<<<<< HEAD
-      <Navbar
-        user={user}
-        onLogout={handleLogout}
-      />
-
-      <div className="mx-auto max-w-[1500px] px-8 py-10">
-
-        <Hero
-          user={user}
-        />
-
-        <div className="mt-10">
-          <QuickActions
-            user={user}
-            permissions={userPermissions}
-          />
-=======
       
 
       <div className="mx-auto max-w-[1500px] px-8 py-10">
@@ -126,7 +59,6 @@ export default function Dashboard() {
 
         <div className="mt-10">
           <QuickActions />
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
         </div>
 
         <div className="mt-10">
@@ -140,30 +72,11 @@ export default function Dashboard() {
 
           <div className="space-y-8 xl:col-span-2">
 
-<<<<<<< HEAD
-            {userPermissions.canCreate && (
-              <PostComposer
-                user={user}
-                posts={posts}
-                setPosts={setPosts}
-                savePosts={savePosts}
-                addActivity={handleActivity}
-                permissions={userPermissions}
-              />
-            )}
-
-            <PostFeed
-=======
             <PostComposer
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
               user={user}
               posts={posts}
               setPosts={setPosts}
               savePosts={savePosts}
-<<<<<<< HEAD
-              addActivity={handleActivity}
-              permissions={userPermissions}
-=======
               addActivity={(message) => {
                 addActivity(message);
                 refreshActivity();
@@ -178,7 +91,6 @@ export default function Dashboard() {
                 addActivity(message);
                 refreshActivity();
               }}
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
             />
 
           </div>

@@ -1,33 +1,4 @@
 import { useState } from "react";
-<<<<<<< HEAD
-import { Send } from "lucide-react";
-
-export default function PostComposer({
-  user,
-  posts = [],
-  setPosts,
-  savePosts,
-  addActivity,
-  permissions,
-}) {
-  const [content, setContent] = useState("");
-
-  const canCreate =
-    permissions?.canCreate === true;
-
-  if (!canCreate) {
-    return null;
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!permissions?.canCreate) {
-      return;
-    }
-
-    if (!content.trim()) {
-=======
 import { motion } from "framer-motion";
 import { SendHorizontal, Sparkles } from "lucide-react";
 import toast from "react-hot-toast";
@@ -48,31 +19,11 @@ export default function PostComposer({
 
     if (!content.trim()) {
       toast.error("Post cannot be empty");
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
       return;
     }
 
     const newPost = {
       id: Date.now(),
-<<<<<<< HEAD
-      author: user?.name || "User",
-      email: user?.email || "",
-      content: content.trim(),
-      createdAt: new Date().toISOString(),
-    };
-
-    const updatedPosts = [
-      newPost,
-      ...posts,
-    ];
-
-    setPosts(updatedPosts);
-    savePosts(updatedPosts);
-
-    if (addActivity) {
-      addActivity("Created a new post");
-    }
-=======
       author: user.name,
       role: user.role,
       content,
@@ -89,25 +40,11 @@ export default function PostComposer({
     addActivity("Created a new post");
 
     toast.success("Post Published");
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 
     setContent("");
   }
 
   return (
-<<<<<<< HEAD
-    <div className="rounded-3xl border border-white/10 bg-[#111111] p-7">
-
-      <div>
-
-        <h2 className="text-2xl font-bold text-white">
-          Create Post
-        </h2>
-
-        <p className="mt-1 text-sm text-zinc-500">
-          Share something with your workspace.
-        </p>
-=======
     <GlassCard className="p-8">
 
       <div className="flex items-center gap-3">
@@ -133,64 +70,11 @@ export default function PostComposer({
           </p>
 
         </div>
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 
       </div>
 
       <form
         onSubmit={handleSubmit}
-<<<<<<< HEAD
-        className="mt-6"
-      >
-
-        <textarea
-          value={content}
-          onChange={(e) =>
-            setContent(e.target.value)
-          }
-          rows={5}
-          placeholder="What's on your mind?"
-          className="
-            w-full
-            resize-none
-            rounded-2xl
-            border
-            border-white/10
-            bg-[#080808]
-            p-5
-            text-white
-            placeholder:text-zinc-600
-            outline-none
-            transition
-            focus:border-yellow-500/40
-          "
-        />
-
-        <div className="mt-4 flex justify-end">
-
-          <button
-            type="submit"
-            disabled={!content.trim()}
-            className="
-              flex
-              items-center
-              gap-2
-              rounded-xl
-              bg-yellow-500
-              px-5
-              py-3
-              font-medium
-              text-black
-              transition
-              hover:bg-yellow-400
-              disabled:cursor-not-allowed
-              disabled:opacity-40
-            "
-          >
-            <Send size={17} />
-            Publish Post
-          </button>
-=======
         className="mt-8"
       >
 
@@ -260,16 +144,11 @@ export default function PostComposer({
             Publish
 
           </motion.button>
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 
         </div>
 
       </form>
 
-<<<<<<< HEAD
-    </div>
-=======
     </GlassCard>
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
   );
 }

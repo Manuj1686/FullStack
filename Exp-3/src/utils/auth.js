@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const DEMO_USERS = [
   {
     name: "Manuj",
@@ -54,32 +55,88 @@ export function login(email, password) {
   };
 }
 
+=======
+// Demo User
+const DEMO_USER = {
+   name: "Manuj",
+  email: "admin@aegis.com",
+  password: "123456",
+  role: "Administrator",
+};
+
+// Login
+export function login(email, password) {
+  if (
+    email === DEMO_USER.email &&
+    password === DEMO_USER.password
+  ) {
+    const payload = {
+      name: DEMO_USER.name,
+      email: DEMO_USER.email,
+      role: DEMO_USER.role,
+      exp: Date.now() + 60 * 60 * 1000, // 1 hour
+    };
+
+    const token = btoa(JSON.stringify(payload));
+
+    localStorage.setItem("token", token);
+
+    return {
+      success: true,
+      token,
+    };
+  }
+
+  return {
+    success: false,
+    message: "Invalid email or password",
+  };
+}
+
+// Logout
+>>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 export function logout() {
   localStorage.removeItem("token");
 }
 
+<<<<<<< HEAD
 export function isAuthenticated() {
   const token = localStorage.getItem("token");
 
   if (!token) {
     return false;
   }
+=======
+// Check Login
+export function isAuthenticated() {
+  const token = localStorage.getItem("token");
+
+  if (!token) return false;
+>>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 
   try {
     const user = JSON.parse(atob(token));
 
+<<<<<<< HEAD
     if (!user.exp || Date.now() >= user.exp) {
+=======
+    if (Date.now() > user.exp) {
+>>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
       localStorage.removeItem("token");
       return false;
     }
 
     return true;
   } catch {
+<<<<<<< HEAD
     localStorage.removeItem("token");
+=======
+>>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
     return false;
   }
 }
 
+<<<<<<< HEAD
 export function getUser() {
   const token = localStorage.getItem("token");
 
@@ -96,6 +153,16 @@ export function getUser() {
     }
 
     return user;
+=======
+// Get User
+export function getUser() {
+  const token = localStorage.getItem("token");
+
+  if (!token) return null;
+
+  try {
+    return JSON.parse(atob(token));
+>>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
   } catch {
     return null;
   }

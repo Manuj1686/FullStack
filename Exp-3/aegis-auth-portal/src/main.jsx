@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-=======
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -10,14 +6,6 @@ import App from "./App";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-<<<<<<< HEAD
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-      <Toaster position="top-right" />
-    </BrowserRouter>
-  </React.StrictMode>
-=======
   <BrowserRouter>
     <Toaster
       position="top-right"
@@ -31,5 +19,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     />
     <App />
   </BrowserRouter>
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 );

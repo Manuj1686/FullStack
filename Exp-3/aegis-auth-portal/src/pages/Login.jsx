@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-import LoginCard from "../components/Login/LoginCard";
-
-export default function Login() {
-  return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#050505] text-white">
-
-      {/* Main Glow */}
-      <div className="absolute left-1/2 top-[-300px] h-[800px] w-[800px] -translate-x-1/2 -translate-y-0 rounded-full bg-yellow-500/10 blur-[180px]" />
-=======
 import { Navigate } from "react-router-dom";
 import LoginCard from "../components/Login/LoginCard";
 import { isAuthenticated } from "../utils/auth";
 
 export default function Login() {
+
+  // If already logged in, go directly to Dashboard
   if (isAuthenticated()) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -22,7 +14,6 @@ export default function Login() {
 
       {/* Main Glow */}
       <div className="absolute left-1/2 top-[-300px] h-[800px] w-[800px] -translate-x-1/2 rounded-full bg-yellow-500/10 blur-[180px] animate-pulse" />
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
 
       {/* Left Glow */}
       <div className="absolute bottom-[-120px] left-[-120px] h-[350px] w-[350px] rounded-full bg-yellow-500/5 blur-[120px]" />
@@ -30,30 +21,22 @@ export default function Login() {
       {/* Right Glow */}
       <div className="absolute right-[-120px] top-[120px] h-[300px] w-[300px] rounded-full bg-yellow-500/5 blur-[120px]" />
 
-<<<<<<< HEAD
-      {/* Grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)
-=======
       {/* Grid Background */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage: `
-          linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)
->>>>>>> parent of 7dbcf92 (Delete Exp-3 directory)
+            linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
         }}
       />
 
+      {/* Login Card */}
       <LoginCard />
 
+      {/* Footer */}
       <p className="absolute bottom-6 text-sm text-zinc-600">
         © 2026 AEGIS Authentication Portal
       </p>
