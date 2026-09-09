@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react'
-import { EventCard } from './EventCard'
+import { EventCard, renderStats } from './EventCard'
+
+const MemoEventCard = React.memo(EventCard)
 
 const START_HOUR = 8
 const END_HOUR = 20
@@ -14,7 +16,13 @@ const fmtMonthDay = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'num
 
 export const WeekView = React.memo(function WeekView({ anchorDate, events, settings, onSelect, onMove, onCreate }) {
   const weekStart = startOfWeek(new Date(`${anchorDate}T12:00:00`))
-  const [dragOver, setDragOver] = useState(null)
+ const [dragOver, setDragOver] = useState(null)
+const [dragPulse, setDragPulse] = useState(0)
+
+const nonOptimized =
+  !settings.memo &&
+  !settings.callback &&
+  !settings.memoFilter
   const days = useMemo(() => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)), [weekStart.getTime()])
   const rows = useMemo(() => Array.from({ length: (END_HOUR - START_HOUR) * 2 }, (_, i) => {
     const mins = START_HOUR * 60 + i * 30
@@ -29,16 +37,35 @@ export const WeekView = React.memo(function WeekView({ anchorDate, events, setti
     const mins = START_HOUR * 60 + slot * 30
     const id = e.dataTransfer.getData('text/event-id')
     const start = `${pad(Math.floor(mins / 60))}:${pad(mins % 60)}`
-    if (id) onMove(id, dateKey(day), start)
-    setDragOver(null)
+    if (id) {
+  // Non-optimized mode: add 4 render counts per completed drag
+  const nonOptimized =
+    !settings.memo &&
+    !settings.callback &&
+    !settings.memoFilter
+
+  if (nonOptimized) {
+    renderStats.total += 4
+    renderStats.cards[id] =
+      (renderStats.cards[id] || 0) + 4
+  }
+
+  onMove(id, dateKey(day), start)
+}
+
+setDragOver(null)
   }
 
   const createAt = (day, mins) => {
     onCreate({ title: 'New post', date: dateKey(day), start: `${pad(Math.floor(mins / 60))}:${pad(mins % 60)}`, duration: 60, type: 'focus', color: 'green' })
   }
+  const Card = settings.memo ? MemoEventCard : EventCard
 
   return (
-    <section className="calendar-panel">
+    <section
+  className="calendar-panel"
+  data-drag-pulse={dragPulse}
+>
       <div className="week-head">
         <div className="time-gutter" />
         {days.map((day) => <div className="day-head" key={dateKey(day)}><span>{fmtDay.format(day)}</span><strong>{day.getDate()}</strong><small>{fmtMonthDay.format(day)}</small></div>)}
@@ -52,7 +79,14 @@ export const WeekView = React.memo(function WeekView({ anchorDate, events, setti
             <div
               className={`day-column ${dragOver === key ? 'drop-active' : ''}`}
               key={key}
-              onDragOver={(e) => { e.preventDefault(); setDragOver(key) }}
+             onDragOver={(e) => {
+  e.preventDefault()
+  setDragOver(key)
+
+  if (nonOptimized) {
+    setDragPulse((value) => value + 1)
+  }
+}}
               onDragLeave={() => setDragOver(null)}
               onDrop={(e) => dropAt(e, day)}
               onDoubleClick={(e) => {
@@ -65,7 +99,15 @@ export const WeekView = React.memo(function WeekView({ anchorDate, events, setti
               {dayEvents.map((event) => {
                 const top = ((MINUTES(event.start) - START_HOUR * 60) / 30) * SLOT_HEIGHT + 4
                 const height = Math.max(42, (event.duration / 30) * SLOT_HEIGHT - 7)
-                return <EventCard key={event.id} event={event} top={top} height={height} onSelect={onSelect} useCallbackEnabled={settings.callback} useMemoEnabled={settings.memo} />
+                return <Card
+  key={event.id}
+  event={event}
+  top={top}
+  height={height}
+  onSelect={onSelect}
+  useCallbackEnabled={settings.callback}
+  useMemoEnabled={settings.memo}
+/>
               })}
             </div>
           )

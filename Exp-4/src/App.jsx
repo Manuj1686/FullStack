@@ -484,12 +484,23 @@ export default function App() {
         ====================================================== */}
 
         <RenderMonitor
-          events={calendar.events}
-          onReset={() => {
-            resetRenderStats()
-            resetCounters()
-          }}
-        />
+  events={calendar.events}
+  optimized={
+    calendar.settings.memo &&
+    calendar.settings.callback &&
+    calendar.settings.memoFilter
+  }
+  onReset={() => {
+    if (
+      calendar.settings.memo &&
+      calendar.settings.callback &&
+      calendar.settings.memoFilter
+    ) {
+      resetRenderStats()
+      resetCounters()
+    }
+  }}
+/>
 
       </div>
 
