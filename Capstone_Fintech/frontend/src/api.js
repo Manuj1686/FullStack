@@ -1,0 +1,2 @@
+const API='http://localhost:8080/api'
+export async function request(path,options={}){const response=await fetch(`${API}${path}`,{credentials:'include',headers:{'Content-Type':'application/json',...(options.headers||{})},...options});if(!response.ok){let message=`Request failed (${response.status})`;try{const data=await response.json();message=data.message||data.error||message}catch{}throw new Error(message)}if(response.status===204)return null;return response.json()}
