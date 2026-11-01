@@ -1,3 +1,0 @@
-package com.pocketwise.controller;
-import java.util.*; import org.springframework.web.bind.annotation.*; import com.pocketwise.repository.UserRepository; import com.pocketwise.model.AppUser;
-@RestController @RequestMapping("/api/admin") public class AdminController {private final UserRepository users; public AdminController(UserRepository u){users=u;} @GetMapping("/users") public Map<String,Object> users(){List<Map<String,Object>> list=users.findAll().stream().map(u->{Map<String,Object> m=new LinkedHashMap<>();m.put("id",u.getId());m.put("name",u.getName());m.put("email",u.getEmail());m.put("role",u.getRole());return m;}).toList();return Map.of("totalUsers",list.size(),"users",list);}}
